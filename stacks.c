@@ -9,32 +9,29 @@ typedef struct stack{
 }stack;
 
 void init(stack *s);
-void allocate(stack *s);
+void reallocate(stack *s);
 void push(stack *s,int data);
 void pop(stack *s);
 void display(stack *s);
 void clear(stack *s);
 
 void init(stack *s){
-    s->size = 0;
+    s->a = (int*)malloc(sizeof(int) * MAX);
+    s->size = MAX;
     s->used_size = -1;
     return;
 }
 
-void allocate(stack *s){
-    if(s->size == 0){
-        s->a = (int*)malloc(sizeof(int)*MAX);
-        s->size = MAX;
-    }
-    else if(s->used_size == (s->size - 1)){
-        s->a = (int*)realloc(s->a,2*(s->size)*sizeof(int));
-        s->size = 2*(s->size);
-    }
+void reallocate(stack *s){
+    s->a = (int*)realloc(s->a,2*(s->size)*sizeof(int));
+    s->size = 2*(s->size);
     return;
 }
 
 void push(stack *s,int data){
-    allocate(s);
+    if(s->used_size == (s->size - 1)){
+         reallocate(s);
+    }
     s->used_size++;
     s->a[s->used_size] = data;
     printf("%d pushed successfully\n",data);
@@ -78,7 +75,7 @@ void main(){
     init(&stack);
     printf("\n\t-------\n\t STACK\n\t-------\n");
     while(loop){
-        printf("\n----------------\n1. Push\n2. Pop\n3. Display\n4. Clear\n5. Exit\n");
+        printf("\n------------------\n1. Push\n2. Pop\n3. Display\n4. Clear\n5. Exit\n");
         printf("\nSelect an option: ");
         scanf("%d",&choice);
         printf("\n");
@@ -103,9 +100,14 @@ void main(){
             break;
 
         case 5: //exit
-            loop = 0;
             clear(&stack);
-            break;        
+            loop = 0;
+            printf("-------EXIT-------\n");
+            break;
+
+        default:
+            printf("Enter a valid option\n");
+            break;
         }
     }
 }

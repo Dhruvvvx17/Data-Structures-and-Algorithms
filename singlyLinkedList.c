@@ -20,9 +20,10 @@ void insertAt(list *l,int data,int pos);
 void deleteAt(list *l,int pos);
 void reverse(list *l);
 void disp(list *l);
+void clear(list *l);
 
-
-void init(list *l){
+    void init(list *l)
+{
     l->head = NULL;
 }
 
@@ -221,6 +222,19 @@ void disp(list *l){
     return;
 }
 
+void clear(list *l){
+    node *p,*q;
+    p=l->head;
+    while(p!=NULL){
+        q = p;
+        p = p->next;
+        free(q);
+    }
+    l->head = NULL;
+    printf("List cleared\n");
+    return;
+}
+
 void main(){
     int loop=1;
     int choice,data,pos;
@@ -228,7 +242,7 @@ void main(){
     init(&list);
     printf("\n\t-------------------\n\tSINGLY LINKED LIST\n\t-------------------\n");
     while(loop){
-        printf("\n----------------------------\n1. Insert in the beginning\n2. Insert in the end\n3. Delete from the beginning\n4. Delete from the end\n5. Insert at\n6. Delete at\n7. Reverse the list\n8. Display\n9. Exit\n");
+        printf("\n----------------------------\n1. Insert in the beginning\n2. Insert in the end\n3. Delete from the beginning\n4. Delete from the end\n5. Insert at\n6. Delete at\n7. Reverse the list\n8. Display\n9. Clear\n10. Exit\n");
         printf("\nSelect an option: ");
         scanf("%d",&choice);
         printf("\n");
@@ -275,10 +289,16 @@ void main(){
                 disp(&list);
                 break;
 
-            case 9: //exit
-                loop = 0;
+            case 9: //clear
+                clear(&list);
                 break;
-            
+
+            case 10: //exit
+                clear(&list);
+                loop = 0;
+                printf("------------EXIT------------\n");
+                break;
+
             default:
                 printf("Enter a valid option\n");
                 break;        

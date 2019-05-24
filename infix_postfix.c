@@ -49,6 +49,8 @@ int stackTop(stack *s){
 
 int precedence(char stackTop, char current){
     switch (current)
+    // returning 1 means empty the stack then push the current operator
+    // returning 0 means push the current operator
     {
     case '(':
         return 0;
@@ -59,19 +61,24 @@ int precedence(char stackTop, char current){
         return 1;
         break;
 
-    case '*':
+    case '*':    //if stack top is + or - or ( then * or / is pushed above them 
     case '/':
         if(stackTop=='+' || stackTop=='-' || stackTop=='(') return 0;
         return 1;
         break;
 
-    case '+':
-    case '-':
-        if(stackTop=='+' || stackTop=='-') return 1;
+    case '+':    //if stack top is + or - then new + or - are pushed above them 
+    case '-':    //stack top is * or / then they are popped for current + or -   
+        if(stackTop=='+' || stackTop=='-') return 0;
         else if(stackTop=='*' || stackTop=='/') return 1;
         return 0;
         break;                        
     }
+
+    /*
+    * or / above + or - => allowed |        a+b*c -- abc*+
+    + or - above * or / => not allowed |    a*b+c -- ab*c+
+    */
 }
 
 void main(){

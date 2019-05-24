@@ -1,5 +1,5 @@
-# Data-Structures
-Basic data structure implementations in C
+# Data-Structures-and-Algorithms
+Implementation of Data Structures and algorithms in C
 
 1.Singly Linked List
 

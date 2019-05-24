@@ -186,6 +186,10 @@ void reverse(list *l){
         printf("List is empty\n");
         return;
     }
+    if(l->head->next == NULL){
+        printf("List reversed\n");
+        return;
+    }
     node *p,*q,*r;
     r = l->head;
     q = r->next;

@@ -6,3 +6,5 @@ Implementation of Data Structures and algorithms in C
 2.Doubly Linked List
 
 3.Stacks
+
+4.Infix to Postfix

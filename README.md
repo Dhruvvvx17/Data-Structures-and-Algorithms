@@ -12,3 +12,5 @@ Implementation of Data Structures and algorithms in C
 5.Expression Trees (using stacks and trees)
 
 6.Bracket Validity (using stacks)
+
+7.Circular Queue

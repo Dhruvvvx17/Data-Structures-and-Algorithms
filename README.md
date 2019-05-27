@@ -14,3 +14,5 @@ Implementation of Data Structures and algorithms in C
 6.Bracket Validity (using stacks)
 
 7.Circular Queue
+
+8.DFS and BFS using Adjacecy Matrix

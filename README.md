@@ -7,6 +7,8 @@ Implementation of Data Structures and algorithms in C
 
 3.Stacks
 
-4.Infix to Postfix
+4.Infix to Postfix (using stacks)
 
-5.Expression Trees
+5.Expression Trees (using stacks and trees)
+
+6.Bracket Validity (using stacks)

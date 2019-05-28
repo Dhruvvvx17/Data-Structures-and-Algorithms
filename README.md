@@ -16,3 +16,5 @@ Implementation of Data Structures and algorithms in C
 7.Circular Queue
 
 8.DFS and BFS using Adjacecy Matrix
+
+9.Binary Search Tree using Linked list (insertion only)

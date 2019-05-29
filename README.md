@@ -20,3 +20,5 @@ Implementation of Data Structures and algorithms in C
 9.Binary Search Tree using Linked list (insertion, deletion and traversal)
 
 10.Binary Search Tree using Array (insertion and traversal only)
+
+11.Heap using array (Max heap)

@@ -17,4 +17,4 @@ Implementation of Data Structures and algorithms in C
 
 8.DFS and BFS using Adjacecy Matrix
 
-9.Binary Search Tree using Linked list (insertion only)
+9.Binary Search Tree using Linked list (insertion and deletion)

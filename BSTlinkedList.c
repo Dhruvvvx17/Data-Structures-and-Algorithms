@@ -6,14 +6,18 @@ typedef struct node{
     struct node *left, *right;
 }node;
 
-void createBST();
-void preorder(node *r); 
-void inorder(node *r);
-void postorder(node *r);
-node *delete(node *r, int ele);
-void clear(node *r);
+typedef struct BST{
+    node *root;
+    int nodes;
+}BST;
 
-void createBST(node *r){
+void createBST();
+void preorder(node *root); 
+void inorder(node *root);
+void postorder(node *root);
+node *delete(node *root, int ele, int *v);
+
+void createBST(BST *bst){
     node *temp, *p, *q;
     temp = (node*)malloc(sizeof(node));
     printf("Enter element: ");
@@ -22,7 +26,7 @@ void createBST(node *r){
     temp->right = NULL;
 
     q = NULL;
-    p = r;
+    p = bst->root;
     if (p->data == temp->data){
         printf("Element already inserted.\n");
         free(temp);
@@ -33,8 +37,13 @@ void createBST(node *r){
         q = p;
         if(temp->data < p->data)
             p = p->left;
-        else
+        else if (temp->data > p->data)
             p = p->right;
+        else {
+            printf("Element already inserted.\n");
+            free(temp);
+            return;
+        }    
     }
     //insertion
     if(temp->data < q->data)
@@ -43,131 +52,167 @@ void createBST(node *r){
         q->right = temp;
 
     printf("Element %d inserted successfully\n",temp->data);
+    (bst->nodes)+=1;
     return;
 }
 
-void preorder(node *r){
-    if(r!= NULL){
-        printf("%d ",r->data);
-        preorder(r->right);
-        preorder(r->left);
+void preorder(node *root){
+    if(root!= NULL){
+        printf("%d ",root->data);
+        preorder(root->left);
+        preorder(root->right);
     }
     return;    
 }
 
-void inorder(node *r){
-    if(r!= NULL){
-        inorder(r->left);
-        printf("%d ",r->data);
-        inorder(r->right);
+void inorder(node *root){
+    if(root!= NULL){
+        inorder(root->left);
+        printf("%d ",root->data);
+        inorder(root->right);
     }
     return;
 }
 
-void postorder(node *r){
-    if(r!= NULL){
-        postorder(r->right);
-        postorder(r->left);
-        printf("%d ", r->data);
+void postorder(node *root){
+    if(root!= NULL){
+        postorder(root->left);
+        postorder(root->right);
+        printf("%d ", root->data);
     }
     return;    
 }
 
-node* delete(node *r,int ele){
+node* delete(node *root,int ele, int *v){
     node *temp , *p;
-    if (r == NULL)  return r;
+    if (root == NULL)  return root;
     
-    if(ele < r->data)
-        r->left = delete(r->left, ele);
-    else if(ele > r->data)
-        r->right = delete(r->right, ele);
+    if(root->left == NULL && root->right == NULL && root->data != ele){
+        *v = 0;
+        printf("Element is not present in the BST\n");
+        return root;
+    }
+    else if((ele < root->data && root->left == NULL) || (ele > root->data && root->right == NULL) ){
+        *v = 0;
+        printf("Element is not present in the BST\n");
+        return root;
+    }
+
+    if(ele < root->data)
+        root->left = delete(root->left, ele, v);
+    else if(ele > root->data)
+        root->right = delete(root->right, ele, v);
     else{
-        if(r->left == NULL){
-            temp = r->right;
-            free(r);
+        if(root->left == NULL){
+            temp = root->right;
+            free(root);
             return temp;
         }
-        else if(r->right == NULL){
-            temp = r->left;
-            free(r);
+        else if(root->right == NULL){
+            temp = root->left;
+            free(root);
             return temp;
         }
         else{
-            p = r->right;
+            p = root->right;
             while(p->left != NULL){
                 p = p->left;
             }
-            r->data = p->data;
-            r->right = delete(r->right,p->data);
-            return r;
+            root->data = p->data;
+            root->right = delete(root->right,p->data, v);
+            return root;
         }
     }
-    return r;
-}
-
-void clear(node *r){
-    if(r->left != NULL){
-        clear(r->left);
-    }
-    if(r->left != NULL){
-        clear(r->right);
-    }
-    free(r);
-    return;
+    // *v = 1;
+    return root;
 }
 
 void main()
 {
-    node *root;
-    root = (node *)malloc(sizeof(node));
+    BST BST;
+    BST.root = (node *)malloc(sizeof(node));
+    BST.nodes = 1;  //root node
     printf("\n\t------------------\n\tBINARY SEARCH TREE\n\t------------------\n");
     printf("\nEnter the root element: ");
-    scanf("%d", &root->data);
-    root->left = NULL;
-    root->right = NULL;
-    int choice,ele,loop=1;
+    scanf("%d", &BST.root->data);
+    BST.root->left = NULL;
+    BST.root->right = NULL;
+    int choice,ele,loop=1, v;
     while(loop){
-        printf("\n----------------------------\n1. Insert\n2. Delete\n3. Inorder traversal\n4. Preorder traversal\n5. Postorder traversal\n6. Exit\n");
+        printf("\n----------------------------\n1. Insert\n2. Delete\n3. Inorder traversal\n4. Preorder traversal\n5. Postorder traversal\n6. Number of nodes\n7. Exit\n");
         printf("\nSelect an option: ");
         scanf("%d",&choice);
         printf("\n");
         switch(choice){
             case 1://insert
-                createBST(root);
+                if(BST.nodes == 0){
+                    BST.root = (node *)malloc(sizeof(node));
+                    printf("\nEnter the root element: ");
+                    scanf("%d", &BST.root->data);
+                    BST.root->left = NULL;
+                    BST.root->right = NULL;
+                    BST.nodes = 1; //root node
+                }
+                createBST(&BST);
                 break;
 
-            case 2://delete (does not handle the case of ele not present)
+            case 2://delete
+                v=1;
+                if(BST.nodes == 0){
+                    printf("Empty BST\n");
+                    break;
+                }
                 printf("Enter element: ");
                 scanf("%d",&ele);
-                root = delete(root,ele);
-                printf("Element deleted successfully\n");
+                BST.root = delete(BST.root,ele,&v);
+                if(v){
+                    printf("Element deleted successfully\n");
+                    (BST.nodes) -= 1;
+                }
                 break;
 
             case 3://inorder
+                if(BST.nodes == 0){
+                    printf("Empty BST\n");
+                    break;
+                }
                 printf("Inorder: ");
-                inorder(root);
+                inorder(BST.root);
                 printf("\n");
                 break;
 
             case 4://preorder
+                if(BST.nodes == 0){
+                    printf("Empty BST\n");
+                    break;
+                }
                 printf("Preorder: ");
-                preorder(root);
+                preorder(BST.root);
                 printf("\n");
                 break;
 
             case 5://postorder
+                if(BST.nodes == 0){
+                    printf("Empty BST\n");
+                    break;
+                }
                 printf("Postorder: ");
-                postorder(root);
+                postorder(BST.root);
                 printf("\n");
                 break;
 
-            case 6://exit
-                clear(root);
+            case 6://no of nodes
+                printf("Number of nodes: %d\n",BST.nodes);
+                break;
+
+            case 7://exit
+                free(BST.root);
                 loop = 0;
                 printf("--------------EXIT--------------\n");
                 break;
 
             default:
+                printf("Enter valid option\n");
                 break;
         }
     }

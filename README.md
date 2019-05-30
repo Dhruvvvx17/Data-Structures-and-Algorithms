@@ -22,3 +22,5 @@ Implementation of Data Structures and algorithms in C
 10.Binary Search Tree using Array (insertion and traversal only)
 
 11.Heap using array (Max heap)
+
+12.Priority queue (Max heap approach)

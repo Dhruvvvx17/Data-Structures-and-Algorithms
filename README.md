@@ -25,4 +25,4 @@ Implementation of Data Structures and algorithms in C
 
 12.Priority queue (Max heap approach)
 
-13.Trie (Insertion and search)
+13.Trie (Insertion, Deletion and Search)

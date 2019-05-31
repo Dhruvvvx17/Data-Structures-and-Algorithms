@@ -14,8 +14,8 @@ typedef struct trie{
 
 node* getNode();
 void insert(trie *trie,char *str);
-void search(trie *trie,char *str);
-int delete(node *curr,char *str);
+int search(trie *trie,char *str);
+int delete(node **curr,char *str);
 int haveChildren(node *curr);
 
 node* getNode(){
@@ -43,25 +43,77 @@ void insert(trie *trie, char *str){
     return;
 }
 
-void search(trie *trie, char *str){
+int search(trie *trie, char *str){
+    char x[100];
+    strcpy(x,str);
     if(trie->root == NULL) {
         printf("Empty trie\n");
-        return;
+        return 0;
     }
     node *curr = trie->root;
     while(*str){
         curr = curr->child[*str - 'a'];
         if(curr == NULL) {
-            printf("Not found\n");
-            return;
+            printf("\"%s\" Not found\n",x);
+            return 0;
         }
         str++;
     }
-    if(curr->isLeaf)
-        printf("Found\n");
-    else
-        printf("Not found\n");
-    return;
+    if(curr->isLeaf){
+        printf("\"%s\" Found\n",x);
+        return 1;
+    }
+    else{
+        printf("\"%s\" Not found\n",x);
+        return 0;
+    }
+}
+
+int haveChildren(node* curr){
+	for (int i = 0; i < 26; i++)
+		if (curr->child[i])
+			return 1;	// child found
+	return 0;   //no child present
+}
+
+int delete(node **curr, char *str)
+{
+    // return if Trie is empty
+    if (*curr == NULL)
+        return 0;
+
+    // if we have not reached the end of the string
+    if (*str){
+        // recur for the node corresponding to next character in the string and if it returns 1, delete current node (if it is non-leaf)
+        if (*curr != NULL && (*curr)->child[*str - 'a'] != NULL && delete(&((*curr)->child[*str - 'a']), str + 1) && (*curr)->isLeaf == 0){
+            if (!haveChildren(*curr)){
+                free(*curr);
+                (*curr) = NULL;
+                return 1;
+            }
+            else{
+                return 0;
+            }
+        }
+    }
+
+    // if we have reached the end of the string
+    if (*str == '\0' && (*curr)->isLeaf)
+    {
+        // if current node is a leaf node and don't have any children
+        if (!haveChildren(*curr)){
+            free(*curr); // delete current node
+            (*curr) = NULL;
+            return 1; // delete non-leaf parent nodes
+        }
+        // if current node is a leaf node and have children
+        else{
+            // mark current node as non-leaf node (DON'T DELETE IT)
+            (*curr)->isLeaf = 0;
+            return 0; // don't delete its parent nodes
+        }
+    }
+    return 0;
 }
 
 void main(){
@@ -78,11 +130,11 @@ void main(){
     char *check;
     printf("\n\t------\n\t TRIE\n\t------\n");
     while(loop){
-        printf("\n------------------\n1. Insert\n2. Search\n4. Number of words\n5. Exit\n");
+        printf("\n------------------\n1. Insert\n2. Search\n3. Delete\n4. Number of words\n5. Exit\n");
         printf("\nSelect an option: ");
         scanf("%d",&choice);
         printf("\n");
-        int d,v=1;
+        int s,d,v=1;    //search, delete, valid.
         switch(choice){
 
         case 1: //Insert
@@ -91,7 +143,7 @@ void main(){
             check = string;
             while(*check && v){
                 if (97 > *check || *check > 122){
-                printf("Invalid character found. Use small case only.\n");
+                printf("Invalid string. Use small case only.\n");
                 v = 0;
                 break;
                 }
@@ -108,7 +160,7 @@ void main(){
             check = string;
             while(*check && v){
                 if (97 > *check || *check > 122){
-                printf("Invalid character found. Use small case only.\n");
+                printf("Invalid string. Use small case only.\n");
                 v = 0;
                 break;
                 }
@@ -116,6 +168,34 @@ void main(){
             }
             if(v){
                 search(&trie, string);
+            }
+            break;
+
+        case 3:
+            printf("Enter the string: ");
+            scanf("%s", string);
+            check = string;
+            while (*check && v){
+                if (97 > *check || *check > 122){
+                    printf("Invalid string. Use small case only.\n");
+                    v = 0;
+                    break;
+                }
+                check++;
+            }
+            if (v){
+                s = search(&trie, string);
+                if(s){
+                    d = delete (&(trie.root), string);
+                    if (d)
+                        printf("Deleted\n");
+                    else
+                        printf("Occurance deleted, but cannot delete from trie as given string is a substring for a larger string\n");
+                    (trie.words) -= 1;
+                }
+                else{
+                    printf("Deletion unsuccessful.\n");
+                }
             }
             break;
 

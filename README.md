@@ -1,6 +1,9 @@
 # Data-Structures-and-Algorithms
 Implementation of Data Structures and algorithms in C
 
+
+### Data Structures:
+
 1.Singly Linked List
 
 2.Doubly Linked List
@@ -28,3 +31,7 @@ Implementation of Data Structures and algorithms in C
 13.Trie (Insertion, Deletion and Search)
 
 14.Hash Table (Linear probing implementation - Insertion and Search)
+
+### Algorithms:
+
+1.Linear Search

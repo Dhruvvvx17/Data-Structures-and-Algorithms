@@ -35,3 +35,5 @@ Implementation of Data Structures and algorithms in C
 ### Algorithms:
 
 1.Linear Search
+
+2.Naive String Matching

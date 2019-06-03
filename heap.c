@@ -1,11 +1,13 @@
 #include<stdio.h>
+#include<stdlib.h>
 // MAX HEAP
 void main(){
     int f,s,ele,n;
-    printf("Enter number of elements to be inserted: \n");
+    printf("Enter number of elements to be inserted: ");
     scanf("%d",&n);
-    int heap[n];
-    printf("Enter heap elements: \n");
+    int* heap;
+    heap = (int*)malloc(sizeof(int)*n);
+    printf("Enter heap elements: ");
     for(int i=0;i<n;i++){
         scanf("%d",&heap[i]);
     }

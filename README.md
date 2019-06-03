@@ -37,3 +37,5 @@ Implementation of Data Structures and algorithms in C
 1.Linear Search
 
 2.Naive String Matching
+
+3.Bubble Sort

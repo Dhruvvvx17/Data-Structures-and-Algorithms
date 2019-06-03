@@ -36,12 +36,14 @@ Implementation of Data Structures and algorithms in C
 
 1.Linear Search
 
-2.Naive String Matching
+2.Binary Search
 
-3.Bubble Sort
+3.Naive String Matching
 
-4.Selection Sort
+4.Bubble Sort
 
-5.Merge Sort
+5.Selection Sort
 
-6.Quick Sort
+6.Merge Sort
+
+7.Quick Sort

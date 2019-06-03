@@ -47,3 +47,5 @@ Implementation of Data Structures and algorithms in C
 6.Merge Sort
 
 7.Quick Sort
+
+8.Insertion Sort

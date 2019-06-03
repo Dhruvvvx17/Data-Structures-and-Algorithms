@@ -41,3 +41,5 @@ Implementation of Data Structures and algorithms in C
 3.Bubble Sort
 
 4.Selection Sort
+
+5.Merge Sort

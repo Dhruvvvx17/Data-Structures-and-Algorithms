@@ -21,6 +21,8 @@ Advantage of linked list over arrays is that linked lists are variable size henc
   - Singly Linked List
   - Doubly Linked List
 
+---
+
 3. Stacks
 
 4.Infix to Postfix (using stacks)

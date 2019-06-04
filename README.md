@@ -5,9 +5,7 @@ Implementation of Data Structures and algorithms in C
 ### Data Structures:
 
 1. Singly Linked List
-
 2. Doubly Linked List
-
 3. Stacks
 
 4.Infix to Postfix (using stacks)

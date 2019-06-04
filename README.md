@@ -5,21 +5,21 @@ Implementation of some widely used **Data Structures** and **Algorithms** in C.
 ## Data Structures:
 *a data structure is a data organization, management, and storage format that enables efficient access and modification*
 
-#### Linked Lists:
+- ### Linked Lists:
 A **Linked List** is a linear collection of data elements, whose order is not given by their physical placement in memory. Instead, each element points to the next. It is a data structure consisting of a collection of nodes which together represent a sequence. In its most basic form, each node contains: data, and a reference (in other words, a link/pointer) to the next node in the sequence.
 
 Advantage of linked list over arrays is that linked lists are variable size hence, no restriction on number of elements at any point of time.Disadvantage of linked list over arrays is that random access is not possible in linked list.
 
-**Efficiency**
+**Efficiency of different operations on linked list:**
   - Insertion (beginning/end)          - O(1)
   - Insertion (at specified position)  - O(n)
   - Deletion (beginning/end)           - O(1)
   - Deletion (at specified position)   - O(n)
   - Search                             - O(n)
   
-This Repo contains complete code for-
-  1. Singly Linked List
-  2. Doubly Linked List
+**This Repo contains complete code for:**
+  - Singly Linked List
+  - Doubly Linked List
 
 3. Stacks
 

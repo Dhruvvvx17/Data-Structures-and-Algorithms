@@ -51,3 +51,5 @@ Implementation of Data Structures and algorithms in C
 8.Insertion Sort
 
 9.Heap Sort
+
+10.Distribution Counting Sort

@@ -57,7 +57,7 @@ A **Stack** is an abstract data type that serves as a collection of elements, wi
   - Push   - O(1)
   - Pop    - O(1)
   
-(assuming array implementation or linked list with pointer for a the top of the stack)
+(assuming array implementation or linked list with pointer for the top of the stack)
 
 **Various applications of stacks:**
   - Infix to postfix conversion
@@ -73,11 +73,11 @@ A **Stack** is an abstract data type that serves as a collection of elements, wi
   - Push   - O(1)
   - Pop    - O(1)
 
-(assuming array implementation or linked list with pointer for a the front and read end of the queue)
+(assuming array implementation or linked list with pointer for the front and read end of the queue)
 
 **Various applications of queues:**
   - Disk Scheduling
-  - asynchronous data transfer between two processes 
+  - Asynchronous data transfer between two processes 
   - Priority queue
 
 ---
@@ -132,11 +132,6 @@ A **hash table** s a data structure that implements an associative array abstrac
   - Compiler operations
 
 ---
-
-
-14.Hash Table (Linear probing implementation - Insertion and Search)
-
-### Algorithms:
 
 1.Linear Search
 

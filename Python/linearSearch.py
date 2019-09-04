@@ -1,6 +1,7 @@
 def linearSearch(array,key) -> int:
     n = len(array)
 
+    for i in range(n):
         if(array[i] == key):
             return i
 

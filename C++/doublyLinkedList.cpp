@@ -6,20 +6,22 @@ class Node {
     public:
         int data;
         Node* next;
+        Node* prev;
 
     // constructor
-    Node() : data(0), next(nullptr) {}
+    Node() : data(0), next(nullptr), prev(nullptr) {}
 
-    Node(int data) : data(data), next(nullptr) {}
+    Node(int data) : data(data), next(nullptr), prev(nullptr) {}
 };
 
 class List {
     public:
         Node* head;
+        Node* tail;
         int length;
     
     // constructor
-    List() : head(nullptr), length(0) {}
+    List() : head(nullptr), tail(nullptr), length(0) {}
 
     // method declarations
     void insertBeginning(int data);
@@ -29,6 +31,7 @@ class List {
     void insertAt(int data, int pos);
     void deleteAt(int pos);
     void reverse();
+    void reverseDisplay();
     void display();
     void clear();
 
@@ -42,43 +45,53 @@ class List {
 void List::insertBeginning(int data) {
     Node *newNode = new Node(data);
     newNode->next = head;
+    newNode->prev = nullptr;
+
+    if(length > 0) head->prev = newNode;
     head = newNode;
+
+    if(length == 0) tail = newNode;
+
     length += 1;
-    cout<<data<<" Inserted successfully"<<endl;
+    cout<<data<<" Inserted successfully at the beginning"<<endl;
     return;
 }
 
 void List::insertEnd(int data) {
     Node *newNode = new Node(data);
-    Node *p = head;
+    newNode->prev = tail;
+    newNode->next = nullptr;
 
-    if(p == nullptr) {
-        head = newNode;
-    }
-    else {
-        while(p->next != nullptr) {
-            p = p->next;
-        }
-        p->next = newNode;
-    }
+    if(length > 0) tail->next = newNode;
+    tail = newNode;
+
+    if(length == 0) head = newNode;
 
     length += 1;
-    cout<<data<<" Inserted successfully"<<endl;
+    cout<<data<<" Inserted successfully at the end"<<endl;
     return;
 }
 
 void List::deleteBeginning() {
     if(length == 0) {
-        cout<<"Empty Linked List!"<<endl;
+        cout<<"Empty Linked List! Cannot perform delete"<<endl;
         return;        
     }
-    Node *p = head, *q;
-    q = head;
-    p = p->next;
-    head = p;
+
+    Node *q;
+    if(length == 1) {
+        q = head;
+        head = nullptr;
+        tail = nullptr;
+    }
+    else {
+        q = head;
+        head = head->next;
+        head->prev = nullptr;
+    }
 
     length -= 1;
-    cout<<q->data<<" deleted successfully"<<endl;
+    cout<<q->data<<" deleted successfully from the beginning"<<endl;
     delete q;
     return;
 }
@@ -90,36 +103,27 @@ void List::deleteEnd() {
         return;        
     }
 
-    // single node list
+    Node *q;
     if(length == 1) {
-        Node *p = head;
+        q = head;
         head = nullptr;
-        length -= 1;
-        cout<<p->data<<" deleted successfully"<<endl;
-        delete p;
-        return;
+        tail = nullptr;        
     }
-
-    // general case
-    Node *p = head, *q;
-    q = head;
-    p = p->next;
-
-    while(p->next != nullptr) {
-        p = p->next;
-        q = q->next;
+    else {
+        q = tail;
+        tail = tail->prev;
+        tail->next = nullptr;
     }
-    q->next = nullptr;
 
     length -= 1;
-    cout<<p->data<<" deleted successfully"<<endl;
-    delete p;
+    cout<<q->data<<" deleted successfully from the end"<<endl;
+    delete q;
     return;    
 }
 
 void List::insertAt(int data, int pos) {
     if(pos < 0 || pos > length) {
-        cout<<"Invalid position"<<endl;
+        cout<<"Invalid position, cannot perform insert"<<endl;
         return;
     }
 
@@ -139,16 +143,20 @@ void List::insertAt(int data, int pos) {
     }
     Node *newNode = new Node(data);
     newNode->next = p->next;
-    p->next = newNode;
+    p->next->prev = newNode;
+
+    p->next = newNode;    
+    newNode->prev = p;
+
     length += 1;
     cout<<newNode->data<<" inserted successfully"<<endl;
     return;
 }
 
+
 void List::deleteAt(int pos) {
-    // TODO: pos >= length is invalid
-    if(pos < 0 || pos > length) {
-        cout<<"Invalid position"<<endl;
+    if(pos < 0 || pos >= length) {
+        cout<<"Invalid position, cannot perform delete"<<endl;
         return;
     }
 
@@ -157,8 +165,7 @@ void List::deleteAt(int pos) {
         return;
     }
 
-    // TODO: deleteEnd would be length - 1, length is invalid position
-    if(pos == length) {
+    if(pos == length-1) {
         deleteEnd();
         return;
     }
@@ -168,17 +175,23 @@ void List::deleteAt(int pos) {
         p = p->next;
     }
 
+    // q will be deleted from the list
     q = p->next;
     p->next = q->next;
+    q->next->prev = p;
+    q->next = nullptr;
+    q->prev= nullptr;
+
     length -= 1;
     cout<<q->data<<" deleted successfully"<<endl;
     delete q;
     return;
 }
 
+
 void List::reverse() {
     if(length == 0){
-        cout<<"Empty Linked List!"<<endl;
+        cout<<"Empty Linked List! Cannot reverse."<<endl;
         return;       
     }
 
@@ -188,6 +201,7 @@ void List::reverse() {
         return;
     }
 
+    tail = head;
     Node *p, *q, *r;
     r = head;
     q = r->next;
@@ -196,22 +210,25 @@ void List::reverse() {
     r->next = nullptr;
     while(p != nullptr) {
         q->next = r;
+        r->prev = q;
         r = q;
         q = p;
         p = p->next;
     }
 
     q->next = r;
+    r->prev = q;
     head = q;
     cout<<"Reversed | ";
     display();
     return;
 }
 
+
 void List::display() {
 
     if(length == 0) {
-        cout<<"Empty Linked List!"<<endl;
+        cout<<"Empty Linked List! Nothing to display."<<endl;
         return;
     }
 
@@ -225,19 +242,48 @@ void List::display() {
     return;
 }
 
+void List::reverseDisplay() {
+
+    if(length == 0) {
+        cout<<"Empty Linked List! Nothing to reverse display."<<endl;
+        return;
+    }
+
+    Node *p = tail;
+    cout<<"List contains: ";
+    while(p != nullptr){
+        cout<<p->data<<" ";
+        p = p->prev;
+    }
+    cout<<"| length = "<<length<<endl;
+    return;
+}
+
+
 void List::clear() {
+
+    if(length == 0) {
+        cout<<"Nothing to clear!"<<endl;
+        return;
+    }
+
     Node *p = head;
     Node *q = nullptr;
     while (p) {
-        q = p->next; 
+        q = p->next;
+        if(q) q->prev = nullptr;  // last node edge case
+        p->next = nullptr;
         delete p;           
         p = q; 
     }
     head = nullptr;
+    tail = nullptr;
     length = 0;
     cout<<"Linked list cleared!"<<endl;
     return;
 }
+
+
 
 int main() {
 
@@ -245,32 +291,63 @@ int main() {
 
     list.display();
 
+    list.insertEnd(3);
     list.insertEnd(4);
+    list.insertBeginning(2);
     list.insertBeginning(1);
-    list.insertAt(2,1);
-    list.insertAt(3,2);
 
     list.display();
-    list.reverse();
+    list.reverseDisplay();
+
+    list.deleteEnd();
+    list.deleteBeginning();
+    list.deleteEnd();
+    list.deleteBeginning();
+
+    list.display();
+
+    list.insertEnd(3);
+    list.insertEnd(4);
+    list.insertBeginning(2);
+    list.insertBeginning(1);
+
+    list.insertAt(100, 2);
+
+    list.display();
 
     list.clear();
 
-    list.insertEnd(4);
-    list.insertBeginning(1);
-    list.insertAt(2,1);
-    list.insertAt(3,2);
+    list.insertAt(20, -5);
+    list.insertAt(20, 5);
+    list.insertAt(20, 0);   // beginning
+    list.insertAt(40, 1);   // end
+    list.insertAt(80, 2);   // end
+    list.insertAt(60, 2);
+    list.insertAt(100, 4);  // end
+    list.insertAt(50, 2);
 
     list.display();
 
+    list.deleteAt(-5);
     list.deleteAt(10);
-    list.deleteBeginning();
-    list.reverse();
-    list.deleteEnd();
+    list.deleteAt(0);    // beginning
+    list.deleteAt(4);    // end
+    list.deleteAt(2);
 
-    list.deleteAt(0);
-    list.deleteAt(0);
+    list.display();
 
     list.reverse();
+
+    list.insertBeginning(1);
+    list.insertEnd(100);
+    list.insertAt(75, 3);
+
+    list.display();
+
+    list.reverse();
+
+    list.deleteAt(3);
+
     list.clear();
 
     return 0;
